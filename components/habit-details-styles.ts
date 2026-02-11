@@ -1,0 +1,401 @@
+import { StyleSheet } from 'react-native';
+
+export const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        paddingTop: 60,
+    },
+    topBar: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 20,
+        marginBottom: 24,
+    },
+    backButton: {
+        padding: 8,
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: '600',
+        flex: 1,
+        textAlign: 'center',
+    },
+    menuButton: {
+        padding: 8,
+    },
+    content: {
+        flex: 1,
+        paddingHorizontal: 20,
+    },
+    section: {
+        marginBottom: 32,
+    },
+    sectionTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 16,
+    },
+    statsGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        justifyContent: 'space-between',
+    },
+    statCard: {
+        width: '48%',
+        borderRadius: 16,
+        padding: 20,
+        alignItems: 'center',
+        marginBottom: 12,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    statNumber: {
+        fontSize: 24,
+        fontWeight: '700',
+        marginBottom: 4,
+    },
+    statLabel: {
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    todayCard: {
+        borderRadius: 16,
+        padding: 20,
+        borderWidth: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    todayHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    todayProgress: {
+        fontSize: 16,
+        fontWeight: '600',
+        marginBottom: 12,
+    },
+    progressBar: {
+        height: 4,
+        backgroundColor: '#E5E7EB',
+        borderRadius: 2,
+    },
+    progressFill: {
+        height: '100%',
+        borderRadius: 2,
+    },
+    listCard: {
+        borderRadius: 16,
+        padding: 20,
+        borderWidth: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    listItem: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    listLabel: {
+        fontSize: 16,
+        fontWeight: '500',
+    },
+    listValue: {
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    configCard: {
+        borderRadius: 16,
+        padding: 20,
+        borderWidth: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    configHeader: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    configIcon: {
+        width: 40,
+        height: 40,
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginRight: 12,
+    },
+    configInfo: {
+        flex: 1,
+    },
+    configName: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 4,
+    },
+    configDescription: {
+        fontSize: 14,
+        fontWeight: '400',
+    },
+    configDetails: {
+        gap: 12,
+    },
+    configDetail: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingVertical: 8,
+    },
+    configLabel: {
+        fontSize: 14,
+        fontWeight: '500',
+    },
+    configValue: {
+        fontSize: 14,
+        fontWeight: '600',
+    },
+    insightsCard: {
+        borderRadius: 16,
+        padding: 20,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    insightItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginBottom: 12,
+    },
+    insightText: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginLeft: 8,
+        flex: 1,
+    },
+    bottomSpacing: {
+        height: 40,
+    },
+    // Chart styles
+    chartCard: {
+        borderRadius: 16,
+        padding: 20,
+        marginBottom: 20,
+        borderWidth: 1,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+    },
+    chartTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+        marginBottom: 16,
+        textAlign: 'center',
+    },
+    chartSubtitle: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginTop: 12,
+        textAlign: 'center',
+        fontStyle: 'italic',
+    },
+    circularProgressContainer: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginVertical: 16,
+    },
+    chart: {
+        marginVertical: 8,
+        borderRadius: 16,
+    },
+    percentageOverlay: {
+        position: 'absolute',
+        alignItems: 'center',
+        justifyContent: 'center',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+    },
+    percentageText: {
+        fontSize: 24,
+        fontWeight: 'bold',
+    },
+    // Streak comparison styles
+    streakComparison: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        alignItems: 'center',
+        paddingVertical: 20,
+    },
+    streakItem: {
+        alignItems: 'center',
+        flex: 1,
+    },
+    streakLabel: {
+        fontSize: 14,
+        fontWeight: '500',
+        marginBottom: 8,
+    },
+    streakValue: {
+        fontSize: 32,
+        fontWeight: '700',
+    },
+    streakDivider: {
+        width: 1,
+        height: 60,
+        backgroundColor: '#E5E7EB',
+    },
+    // Area chart styles
+    areaChartContainer: {
+        marginVertical: 10,
+    },
+    chartLabels: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 8,
+        paddingHorizontal: 20,
+    },
+    chartLabel: {
+        fontSize: 12,
+        fontWeight: '500',
+    },
+    // No data styles
+    noDataContainer: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingHorizontal: 20,
+        minHeight: 300,
+    },
+    noDataCard: {
+        borderRadius: 16,
+        padding: 32,
+        borderWidth: 1,
+        alignItems: 'center',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.05,
+        shadowRadius: 8,
+        elevation: 3,
+        maxWidth: 320,
+    },
+    noDataIcon: {
+        width: 64,
+        height: 64,
+        borderRadius: 32,
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom: 20,
+    },
+    noDataTitle: {
+        fontSize: 20,
+        fontWeight: '600',
+        marginBottom: 12,
+        textAlign: 'center',
+    },
+    noDataMessage: {
+        fontSize: 16,
+        fontWeight: '500',
+        textAlign: 'center',
+        marginBottom: 8,
+        lineHeight: 24,
+    },
+    noDataSubMessage: {
+        fontSize: 14,
+        fontWeight: '400',
+        textAlign: 'center',
+        lineHeight: 20,
+    },
+    // Calendar styles
+    calendarHeader: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginBottom: 16,
+    },
+    calendarNavButton: {
+        padding: 8,
+    },
+    calendarMonthTitle: {
+        fontSize: 18,
+        fontWeight: '600',
+    },
+    calendarDayHeaders: {
+        flexDirection: 'row',
+        marginBottom: 8,
+    },
+    calendarDayHeader: {
+        flex: 1,
+        alignItems: 'center',
+        paddingVertical: 4,
+    },
+    calendarDayHeaderText: {
+        fontSize: 12,
+        fontWeight: '600',
+    },
+    calendarGrid: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        borderTopWidth: 1,
+        borderLeftWidth: 1,
+        borderColor: '#E5E7EB',
+    },
+    calendarDay: {
+        width: '14.28%', // 100% / 7 days
+        aspectRatio: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 8,
+        borderRightWidth: 1,
+        borderBottomWidth: 1,
+        borderColor: '#E5E7EB',
+        position: 'relative',
+    },
+    calendarDayNumber: {
+        fontSize: 9,
+        fontWeight: '600',
+        position: 'absolute',
+        bottom: 4,
+        right: 4,
+    },
+    calendarDayMarker: {
+        fontSize: 28,
+        fontWeight: '900',
+    },
+    calendarLegend: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 16,
+        marginTop: 16,
+        paddingTop: 16,
+        borderTopWidth: 1,
+        borderTopColor: '#E5E7EB',
+    },
+    calendarLegendItem: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+    },
+    calendarLegendText: {
+        fontSize: 12,
+        fontWeight: '500',
+    },
+});

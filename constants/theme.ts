@@ -5,37 +5,72 @@
 
 import { Platform } from 'react-native';
 
-const tintColorLight = '#0a7ea4';
-const tintColorDark = '#fff';
+export type ThemeName = 'light' | 'dark';
+export type ThemePreference = ThemeName | 'system';
+
+const lightPalette = {
+  background: '#F8F9FB',   // app background
+  surface: '#FFFFFF',     // cards
+  primary: '#010101',     // main text / icons
+  secondary: '#4A5568',   // secondary text
+  accent: '#b6cbcaff',      // mint cards, progress, highlights
+  highlight: '#FBEBCC',   // beige pills (yoga, tags)
+  text: '#010101',        // primary text
+  accentText: '#010101',  // text on accent backgrounds
+  muted: '#6B7280',       // muted labels
+  border: '#E5E7EB',      // subtle dividers
+};
+
+const darkPalette = {
+  background: '#010101',  // true near-black background
+  surface: '#151515',     // elevated cards
+  primary: '#ECEFF4',     // main text
+  secondary: '#CBD5E1',   // secondary text
+  accent: '#b6cbcaff',      // mint highlight cards
+  highlight: '#FBEBCC',   // beige accent pills
+  text: '#ECEFF4',        // primary text
+  accentText: '#010101',  // black text on accent backgrounds
+  muted: '#94A3B8',       // muted text
+  border: '#1F2937',      // subtle separators
+};
+
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#fff',
-    tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
-    tabIconSelected: tintColorLight,
+    text: lightPalette.text,
+    background: lightPalette.background,
+    surface: lightPalette.surface,
+    card: lightPalette.surface,
+    border: lightPalette.border,
+    muted: lightPalette.muted,
+    accent: lightPalette.accent,
+    accentText: lightPalette.accentText,
+    tint: lightPalette.primary,
+    icon: lightPalette.muted,
+    tabIconDefault: lightPalette.muted,
+    tabIconSelected: lightPalette.primary,
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
-    tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
-    tabIconSelected: tintColorDark,
+    text: darkPalette.text,
+    background: darkPalette.background,
+    surface: darkPalette.surface,
+    card: darkPalette.surface,
+    border: darkPalette.border,
+    muted: darkPalette.muted,
+    accent: darkPalette.accent,
+    accentText: darkPalette.accentText,
+    tint: darkPalette.primary,
+    icon: darkPalette.muted,
+    tabIconDefault: darkPalette.muted,
+    tabIconSelected: darkPalette.primary,
   },
 };
 
 export const Fonts = Platform.select({
   ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
     sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
     serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
     rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
     mono: 'ui-monospace',
   },
   default: {
