@@ -7,8 +7,8 @@ import { getDatabase } from './sqlite';
 
 export interface QuoteRecord {
     id: number;
-    verse_no: string;
-    verse: string;
+    author: string;
+    quote_text: string;
     created_at: string;
     updated_at: string;
 }
@@ -30,7 +30,7 @@ export function getRandomQuote(): QuoteRecord | null {
 export function getAllQuotes(): QuoteRecord[] {
     const db = getDatabase();
     return db.getAllSync<QuoteRecord>(
-        'SELECT * FROM quotes ORDER BY verse_no ASC'
+        'SELECT * FROM quotes ORDER BY author ASC'
     );
 }
 

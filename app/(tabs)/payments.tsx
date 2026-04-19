@@ -33,8 +33,6 @@ export default function PaymentsScreen() {
     const [isDeleteConfirmVisible, setIsDeleteConfirmVisible] = useState(false);
     const [paymentToDelete, setPaymentToDelete] = useState<{ id: number, name: string } | null>(null);
     const [searchQuery, setSearchQuery] = useState('');
-    // Local state to track input values for each payment
-    const [inputValues, setInputValues] = useState<Record<number, { toPay: string; toGet: string }>>({});
 
     const backgroundColor = useThemeColor({}, 'background');
     const surfaceColor = useThemeColor({}, 'surface');
@@ -48,15 +46,6 @@ export default function PaymentsScreen() {
         try {
             const allPayments = getAllPayments();
             setPayments(allPayments);
-            // Initialize input values from database
-            const newInputValues: Record<number, { toPay: string; toGet: string }> = {};
-            allPayments.forEach(payment => {
-                newInputValues[payment.id] = {
-                    toPay: payment.to_pay.toString(),
-                    toGet: payment.to_get.toString(),
-                };
-            });
-            setInputValues(newInputValues);
         } catch (error) {
             console.error('Failed to load payments:', error);
         }
@@ -72,94 +61,6 @@ export default function PaymentsScreen() {
         }, [])
     );
 
-    const handleInputChange = (
-        id: number,
-        field: 'toPay' | 'toGet',
-        value: string
-    ) => {
-        setInputValues(prev => ({
-            ...prev,
-            [id]: {
-                ...prev[id],
-                [field]: value,
-            },
-        }));
-    };
-
-    // Evaluate arithmetic expressions (e.g., "5+10-3" => 12)
-    const evaluateExpression = (input: string): number => {
-        try {
-            // Remove all whitespace
-            const clean = input.replace(/\s/g, '');
-
-            // Validate input: only numbers, +, -, and decimal points
-            if (!/^[0-9+.\-]+$/.test(clean)) {
-                return parseFloat(input) || 0;
-            }
-
-            // Split by + and - while keeping the operators
-            const tokens: string[] = [];
-            let currentNumber = '';
-
-            for (let i = 0; i < clean.length; i++) {
-                const char = clean[i];
-
-                if (char === '+' || char === '-') {
-                    // Check if it's a negative sign at the start or after an operator
-                    if (i === 0 || clean[i - 1] === '+' || clean[i - 1] === '-') {
-                        currentNumber += char;
-                    } else {
-                        if (currentNumber) {
-                            tokens.push(currentNumber);
-                            currentNumber = '';
-                        }
-                        tokens.push(char);
-                    }
-                } else {
-                    currentNumber += char;
-                }
-            }
-            if (currentNumber) {
-                tokens.push(currentNumber);
-            }
-
-            // Calculate result
-            let result = 0;
-            let currentOp = '+';
-
-            for (const token of tokens) {
-                if (token === '+' || token === '-') {
-                    currentOp = token;
-                } else {
-                    const num = parseFloat(token);
-                    if (!isNaN(num)) {
-                        result = currentOp === '+' ? result + num : result - num;
-                    }
-                }
-            }
-
-            return isNaN(result) ? 0 : result;
-        } catch (error) {
-            return parseFloat(input) || 0;
-        }
-    };
-
-    const handleUpdateAmount = (
-        id: number,
-        field: 'toPay' | 'toGet',
-        value: string
-    ) => {
-        // Evaluate the expression (handles "5+10-3" etc.)
-        const numValue = evaluateExpression(value);
-        try {
-            updatePaymentAmounts(id, {
-                [field === 'toPay' ? 'toPay' : 'toGet']: numValue,
-            });
-            loadPayments();
-        } catch (error) {
-            console.error('Failed to update payment:', error);
-        }
-    };
 
     const handleDeletePayment = (id: number, name: string) => {
         setPaymentToDelete({ id, name });
@@ -214,6 +115,7 @@ export default function PaymentsScreen() {
             <ScaleDecorator>
                 <TouchableOpacity
                     onLongPress={drag}
+                    onPress={() => router.push(`/habit-features/payment-details/${payment.id}` as any)}
                     disabled={isActive}
                     style={[
                         styles.paymentCard,
@@ -269,30 +171,14 @@ export default function PaymentsScreen() {
                                     To_Pay
                                 </ThemedText>
                             </View>
-                            <TextInput
+                            <ThemedText
                                 style={[
-                                    styles.amountInput,
-                                    {
-                                        backgroundColor: backgroundColor,
-                                        color: primaryColor,
-                                        borderColor: borderColor,
-                                    },
+                                    styles.amountValue,
+                                    { color: '#EF4444' },
                                 ]}
-                                keyboardType="phone-pad"
-                                placeholder="0"
-                                placeholderTextColor={mutedColor}
-                                value={inputValues[payment.id]?.toPay === '0' ? '' : inputValues[payment.id]?.toPay || ''}
-                                onChangeText={(text) =>
-                                    handleInputChange(payment.id, 'toPay', text)
-                                }
-                                onEndEditing={(e) =>
-                                    handleUpdateAmount(
-                                        payment.id,
-                                        'toPay',
-                                        e.nativeEvent.text
-                                    )
-                                }
-                            />
+                            >
+                                ₹{payment.to_pay.toFixed(2)}
+                            </ThemedText>
                         </View>
 
                         {/* To Get */}
@@ -309,30 +195,14 @@ export default function PaymentsScreen() {
                                     To_Get
                                 </ThemedText>
                             </View>
-                            <TextInput
+                            <ThemedText
                                 style={[
-                                    styles.amountInput,
-                                    {
-                                        backgroundColor: backgroundColor,
-                                        color: primaryColor,
-                                        borderColor: borderColor,
-                                    },
+                                    styles.amountValue,
+                                    { color: '#10B981' },
                                 ]}
-                                keyboardType="phone-pad"
-                                placeholder="0"
-                                placeholderTextColor={mutedColor}
-                                value={inputValues[payment.id]?.toGet === '0' ? '' : inputValues[payment.id]?.toGet || ''}
-                                onChangeText={(text) =>
-                                    handleInputChange(payment.id, 'toGet', text)
-                                }
-                                onEndEditing={(e) =>
-                                    handleUpdateAmount(
-                                        payment.id,
-                                        'toGet',
-                                        e.nativeEvent.text
-                                    )
-                                }
-                            />
+                            >
+                                ₹{payment.to_get.toFixed(2)}
+                            </ThemedText>
                         </View>
                     </View>
 
@@ -595,15 +465,9 @@ const styles = StyleSheet.create({
         fontSize: 14,
         fontWeight: '500',
     },
-    amountInput: {
-        borderWidth: 1,
-        borderRadius: 8,
-        paddingHorizontal: 12,
-        paddingVertical: 8,
+    amountValue: {
         fontSize: 16,
         fontWeight: '600',
-        minWidth: 100,
-        textAlign: 'right',
     },
     netContainer: {
         marginTop: 16,

@@ -39,7 +39,7 @@ export default function HomeScreen() {
   const [isTaskModalVisible, setIsTaskModalVisible] = useState(false);
   const [editingTask, setEditingTask] = useState<ToDoRecord | null>(null);
   const [taskInput, setTaskInput] = useState('');
-  const [dailyVerse, setDailyVerse] = useState<QuoteRecord | null>(null);
+  const [dailyQuote, setDailyQuote] = useState<QuoteRecord | null>(null);
   const backgroundColor = useThemeColor({}, 'background');
   const surfaceColor = useThemeColor({}, 'surface');
   const primaryColor = useThemeColor({}, 'text');
@@ -86,7 +86,7 @@ export default function HomeScreen() {
 
   useEffect(() => {
     loadHabitsAndProgress();
-    loadDailyVerse();
+    loadDailyQuote();
   }, []);
 
   // Refresh habits when screen comes into focus (after navigation)
@@ -97,12 +97,12 @@ export default function HomeScreen() {
     }, [])
   );
 
-  const loadDailyVerse = () => {
+  const loadDailyQuote = () => {
     try {
-      const verse = getRandomQuote();
-      setDailyVerse(verse);
+      const quote = getRandomQuote();
+      setDailyQuote(quote);
     } catch (error) {
-      console.error('Failed to load verse:', error);
+      console.error('Failed to load quote:', error);
     }
   };
 
@@ -258,26 +258,26 @@ export default function HomeScreen() {
           Track Your Habits
         </ThemedText>
 
-        {/* Daily Quranic Verse */}
-        {dailyVerse && (
+        {/* Daily Motivational Quote */}
+        {dailyQuote && (
           <View style={[styles.verseCard, { backgroundColor: highlightColor, borderColor }]}>
             <View style={styles.verseHeaderRow}>
               <View style={styles.verseHeader}>
-                <Ionicons name="book-outline" size={20} color={accentTextColor} />
-                <ThemedText style={[styles.verseLabel, { color: accentTextColor }]}>Daily Verse</ThemedText>
+                <Ionicons name="chatbubble-ellipses-outline" size={20} color={accentTextColor} />
+                <ThemedText style={[styles.verseLabel, { color: accentTextColor }]}>Daily Quote</ThemedText>
               </View>
               <TouchableOpacity
                 style={styles.verseReloadButton}
-                onPress={loadDailyVerse}
+                onPress={loadDailyQuote}
               >
                 <Ionicons name="refresh-outline" size={18} color={accentTextColor} />
               </TouchableOpacity>
             </View>
             <ThemedText style={[styles.verseText, { color: accentTextColor }]}>
-              "{dailyVerse.verse}"
+              "{dailyQuote.quote_text}"
             </ThemedText>
             <ThemedText style={[styles.verseReference, { color: accentTextColor }]}>
-              - Quran {dailyVerse.verse_no}
+              - {dailyQuote.author}
             </ThemedText>
           </View>
         )}
@@ -834,12 +834,13 @@ const styles = StyleSheet.create({
   verseText: {
     fontSize: 15,
     lineHeight: 24,
+    fontWeight: '500',
     fontStyle: 'italic',
     marginBottom: 12,
   },
   verseReference: {
     fontSize: 13,
-    fontWeight: '500',
+    fontWeight: '600',
     textAlign: 'right',
   },
 });

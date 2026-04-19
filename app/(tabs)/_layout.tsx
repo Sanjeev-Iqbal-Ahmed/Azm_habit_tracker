@@ -1,6 +1,6 @@
+import { Ionicons } from '@expo/vector-icons';
 import { Tabs } from 'expo-router';
 import React from 'react';
-import { Ionicons } from '@expo/vector-icons';
 
 import { HapticTab } from '@/components/haptic-tab';
 import { Colors } from '@/constants/theme';
@@ -8,7 +8,7 @@ import { useColorScheme } from '@/hooks/use-color-scheme';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme() ?? 'light';
-  const themeColors = Colors[colorScheme];  
+  const themeColors = Colors[colorScheme];
 
   return (
     <Tabs
@@ -28,7 +28,15 @@ export default function TabLayout() {
           ),
         }}
       />
-
+      <Tabs.Screen
+        name="todo-now"
+        options={{
+          title: 'To-do Now',
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="checkmark-done" size={28} color={color} />
+          ),
+        }}
+      />
       <Tabs.Screen
         name="habits"
         options={{
@@ -53,6 +61,7 @@ export default function TabLayout() {
         name="notes"
         options={{
           title: 'Notes',
+          href: null,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="document-text" size={30} color={color} />
           ),
@@ -62,11 +71,13 @@ export default function TabLayout() {
         name="pomodoro"
         options={{
           title: 'Pomodoro',
+          href: null,
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="timer" size={28} color={color} />
           ),
         }}
       />
+
 
     </Tabs>
   );

@@ -1,391 +1,303 @@
 /**
- * Collection of Quranic verses to display as daily inspiration
- * Translation style: Sahih International (standard & widely accepted)
+ * Collection of motivational quotes to display as daily inspiration
  */
 
-export interface VerseData {
-  verse_no: string;
-  verse: string;
+export interface QuoteData {
+  author: string;
+  text: string;
 }
 
-export const quranVerses: VerseData[] = [
+export const motivationalQuotes: QuoteData[] = [
   {
-    verse_no: "2:255",
-    verse:
-      "Allah – there is no deity except Him, the Ever-Living, the Sustainer of existence. Neither drowsiness overtakes Him nor sleep."
+    author: "Walt Disney",
+    text: "The way to get started is to quit talking and begin doing."
   },
   {
-    verse_no: "3:185",
-    verse:
-      "Every soul will taste death, and you will only be given your full compensation on the Day of Resurrection."
+    author: "Winston Churchill",
+    text: "The pessimist sees difficulty in every opportunity. The optimist sees opportunity in every difficulty."
   },
   {
-    verse_no: "2:286",
-    verse:
-      "Allah does not burden a soul beyond that it can bear."
+    author: "Will Rogers",
+    text: "Don't let yesterday take up too much of today."
   },
   {
-    verse_no: "94:5-6",
-    verse:
-      "For indeed, with hardship comes ease. Indeed, with hardship comes ease."
+    author: "Unknown",
+    text: "You learn more from failure than from success. Don't let it stop you. Failure builds character."
   },
   {
-    verse_no: "13:28",
-    verse:
-      "Unquestionably, by the remembrance of Allah hearts are assured."
+    author: "Vince Lombardi",
+    text: "It’s not whether you get knocked down, it’s whether you get up."
   },
   {
-    verse_no: "16:97",
-    verse:
-      "Whoever does righteousness, whether male or female, while he is a believer – We will surely cause him to live a good life."
+    author: "Mahatma Gandhi",
+    text: "Live as if you were to die tomorrow. Learn as if you were to live forever."
   },
   {
-    verse_no: "29:69",
-    verse:
-      "And those who strive for Us – We will surely guide them to Our ways."
+    author: "Eleanor Roosevelt",
+    text: "The future belongs to those who believe in the beauty of their dreams."
   },
   {
-    verse_no: "39:53",
-    verse:
-      "Say, 'O My servants who have transgressed against themselves, do not despair of the mercy of Allah. Indeed, Allah forgives all sins.'"
+    author: "Hermann Hesse",
+    text: "Some of us think holding on makes us strong, but sometimes it is letting go."
   },
   {
-    verse_no: "65:3",
-    verse:
-      "And whoever relies upon Allah – then He is sufficient for him."
+    author: "Albert Einstein",
+    text: "Imagination is more important than knowledge."
   },
   {
-    verse_no: "2:153",
-    verse:
-      "O you who have believed, seek help through patience and prayer. Indeed, Allah is with the patient."
+    author: "Bruce Lee",
+    text: "The successful warrior is the average man, with laser-like focus."
   },
   {
-    verse_no: "3:159",
-    verse:
-      "And when you have decided, then rely upon Allah. Indeed, Allah loves those who rely upon Him."
+    author: "Steve Jobs",
+    text: "Your time is limited, so don't waste it living someone else's life."
   },
   {
-    verse_no: "14:7",
-    verse:
-      "If you are grateful, I will surely increase you in favor."
+    author: "Theodore Roosevelt",
+    text: "Believe you can and you're halfway there."
   },
   {
-    verse_no: "33:41",
-    verse:
-      "O you who have believed, remember Allah with much remembrance."
+    author: "Confucius",
+    text: "It does not matter how slowly you go as long as you do not stop."
   },
   {
-    verse_no: "50:16",
-    verse:
-      "And We have already created man and know what his soul whispers to him, and We are closer to him than his jugular vein."
+    author: "Maya Angelou",
+    text: "You will face many defeats in life, but never let yourself be defeated."
   },
   {
-    verse_no: "11:61",
-    verse:
-      "So ask forgiveness of Him and then repent to Him. Indeed, my Lord is near and responsive."
+    author: "Aristotle",
+    text: "We are what we repeatedly do. Excellence, then, is not an act, but a habit."
   },
   {
-    verse_no: "3:139",
-    verse:
-      "So do not weaken and do not grieve, and you will be superior if you are true believers."
+    author: "Nelson Mandela",
+    text: "It always seems impossible until it's done."
   },
   {
-    verse_no: "4:147",
-    verse:
-      "What would Allah do with your punishment if you are grateful and believe?"
+    author: "Franklin D. Roosevelt",
+    text: "The only limit to our realization of tomorrow will be our doubts of today."
   },
   {
-    verse_no: "2:216",
-    verse:
-      "But perhaps you hate a thing and it is good for you; and perhaps you love a thing and it is bad for you. And Allah knows, while you know not."
+    author: "Mark Twain",
+    text: "Twenty years from now you will be more disappointed by the things that you didn't do than by the ones you did do."
   },
   {
-    verse_no: "103:1-3",
-    verse:
-      "By time, indeed mankind is in loss, except for those who have believed and done righteous deeds and advised each other to truth and advised each other to patience."
+    author: "Ralph Waldo Emerson",
+    text: "What lies behind us and what lies before us are tiny matters compared to what lies within us."
   },
   {
-    verse_no: "15:99",
-    verse:
-      "And worship your Lord until there comes to you the certainty (death)."
+    author: "Thomas Edison",
+    text: "I have not failed. I've just found 10,000 ways that won't work."
   },
-
-  // 🌿 Additional beautiful & motivational verses
-
   {
-    verse_no: "8:46",
-    verse:
-      "And be patient. Indeed, Allah is with the patient."
+    author: "Helen Keller",
+    text: "Character cannot be developed in ease and quiet. Only through experience of trial and suffering can the soul be strengthened."
   },
   {
-    verse_no: "57:4",
-    verse:
-      "And He is with you wherever you are. And Allah, of what you do, is Seeing."
+    author: "John Wooden",
+    text: "Success is peace of mind which is a direct result of self-satisfaction in knowing you did your best to become the best you are capable of becoming."
   },
   {
-    verse_no: "2:38",
-    verse:
-      "Whoever follows My guidance – there will be no fear concerning them, nor will they grieve."
+    author: "Lao Tzu",
+    text: "The journey of a thousand miles begins with one step."
   },
   {
-    verse_no: "3:173",
-    verse:
-      "Allah is sufficient for us, and He is the best Disposer of affairs."
+    author: "Audrey Hepburn",
+    text: "Nothing is impossible, the word itself says 'I'm possible!'"
   },
   {
-    verse_no: "20:46",
-    verse:
-      "Fear not. Indeed, I am with you both; I hear and I see."
+    author: "Dalai Lama",
+    text: "Happiness is not something ready made. It comes from your own actions."
   },
   {
-    verse_no: "9:51",
-    verse:
-      "Say, 'Never will we be struck except by what Allah has decreed for us; He is our protector.'"
+    author: "Socrates",
+    text: "The secret of change is to focus all of your energy, not on fighting the old, but on building the new."
   },
   {
-    verse_no: "40:60",
-    verse:
-      "Call upon Me; I will respond to you."
+    author: "Marcus Aurelius",
+    text: "Very little is needed to make a happy life; it is all within yourself, in your way of thinking."
   },
   {
-    verse_no: "21:87",
-    verse:
-      "There is no deity except You; exalted are You. Indeed, I have been of the wrongdoers."
+    author: "Jim Rohn",
+    text: "Discipline is the bridge between goals and accomplishment."
   },
   {
-    verse_no: "18:10",
-    verse:
-      "Our Lord, grant us from Yourself mercy and prepare for us from our affair right guidance."
+    author: "Paulo Coelho",
+    text: "When you want something, all the universe conspires in helping you to achieve it."
   },
   {
-    verse_no: "93:3",
-    verse:
-      "Your Lord has not forsaken you, nor has He detested you."
+    author: "Seneca",
+    text: "Luck is what happens when preparation meets opportunity."
   },
   {
-    verse_no: "93:5",
-    verse:
-      "And your Lord is going to give you, and you will be satisfied."
+    author: "David Goggins",
+    text: "You are in danger of living a life so comfortable and soft that you will die without ever realizing your true potential."
   },
   {
-    verse_no: "48:4",
-    verse:
-      "It is He who sent down tranquility into the hearts of the believers."
+    author: "David Goggins",
+    text: "Stay hard. The pain you feel today will be the strength you feel tomorrow."
   },
   {
-    verse_no: "24:35",
-    verse:
-      "Allah is the Light of the heavens and the earth."
+    author: "Jocko Willink",
+    text: "Discipline equals freedom."
   },
-    {
-    verse_no: "2:45",
-    verse:
-      "And seek help through patience and prayer, and indeed, it is difficult except for the humbly submissive."
-  },
   {
-    verse_no: "2:152",
-    verse:
-      "So remember Me; I will remember you. And be grateful to Me and do not deny Me."
+    author: "Jocko Willink",
+    text: "Don't count the days, make the days count."
   },
   {
-    verse_no: "3:200",
-    verse:
-      "O you who have believed, persevere and endure and remain stationed and fear Allah that you may be successful."
+    author: "Sun Tzu",
+    text: "In the midst of chaos, there is also opportunity."
   },
   {
-    verse_no: "6:160",
-    verse:
-      "Whoever comes with a good deed will have ten times the like thereof."
+    author: "Sun Tzu",
+    text: "Victorious warriors win first and then go to war."
   },
   {
-    verse_no: "8:53",
-    verse:
-      "Allah would not change a favor which He had bestowed upon a people until they change what is within themselves."
+    author: "Muhammad Ali",
+    text: "Don't quit. Suffer now and live the rest of your life as a champion."
   },
   {
-    verse_no: "10:57",
-    verse:
-      "O mankind, there has come to you instruction from your Lord and healing for what is in the hearts."
+    author: "Mike Tyson",
+    text: "Discipline is doing what you hate to do, but doing it like you love it."
   },
   {
-    verse_no: "12:87",
-    verse:
-      "Indeed, no one despairs of relief from Allah except the disbelieving people."
+    author: "Unknown",
+    text: "Weakness is a choice. So is strength."
   },
   {
-    verse_no: "17:9",
-    verse:
-      "Indeed, this Qur’an guides to that which is most suitable."
+    author: "Unknown",
+    text: "Pain is temporary. Quitting lasts forever."
   },
   {
-    verse_no: "18:30",
-    verse:
-      "Indeed, those who have believed and done righteous deeds – We will not allow the reward of anyone who does good to be lost."
+    author: "Unknown",
+    text: "Train your mind to be stronger than your emotions."
   },
   {
-    verse_no: "24:55",
-    verse:
-      "Allah has promised those who believe and do righteous deeds that He will surely grant them succession upon the earth."
+    author: "Unknown",
+    text: "Comfort is the enemy of progress."
   },
   {
-    verse_no: "29:45",
-    verse:
-      "Indeed, prayer prohibits immorality and wrongdoing, and the remembrance of Allah is greater."
+    author: "Unknown",
+    text: "You don't rise to the level of your goals, you fall to the level of your discipline."
   },
   {
-    verse_no: "30:60",
-    verse:
-      "So be patient. Indeed, the promise of Allah is truth."
+    author: "Unknown",
+    text: "No excuses. No shortcuts. No limits."
   },
   {
-    verse_no: "35:29",
-    verse:
-      "Indeed, those who recite the Book of Allah and establish prayer and spend from what We have provided them secretly and publicly can expect a profit that will never perish."
+    author: "Unknown",
+    text: "The harder the battle, the sweeter the victory."
   },
   {
-    verse_no: "41:30",
-    verse:
-      "Indeed, those who have said, 'Our Lord is Allah' and then remained steadfast – the angels descend upon them."
+    author: "Unknown",
+    text: "Be stronger than your strongest excuse."
   },
   {
-    verse_no: "42:43",
-    verse:
-      "And whoever is patient and forgives – indeed, that is of the matters requiring determination."
+    author: "Unknown",
+    text: "If it doesn't challenge you, it won't change you."
   },
   {
-    verse_no: "47:7",
-    verse:
-      "O you who have believed, if you support Allah, He will support you and plant firmly your feet."
+    author: "Unknown",
+    text: "Your only limit is you."
   },
   {
-    verse_no: "49:13",
-    verse:
-      "Indeed, the most noble of you in the sight of Allah is the most righteous of you."
+    author: "Unknown",
+    text: "Greatness is forged in pain."
   },
   {
-    verse_no: "53:39",
-    verse:
-      "And that there is not for man except that for which he strives."
+    author: "Unknown",
+    text: "Win the morning, win the day."
   },
   {
-    verse_no: "58:11",
-    verse:
-      "Allah will raise those who have believed among you and those who were given knowledge, by degrees."
+    author: "Unknown",
+    text: "Execute with discipline, dominate with consistency."
   },
   {
-    verse_no: "64:11",
-    verse:
-      "And whoever believes in Allah – He will guide his heart."
+    author: "Unknown",
+    text: "Every day is a battle. Show up ready to fight."
   },
   {
-    verse_no: "65:2",
-    verse:
-      "And whoever fears Allah – He will make for him a way out."
+    author: "Unknown",
+    text: "Fear is a liar. Act anyway."
   },
   {
-    verse_no: "87:14-15",
-    verse:
-      "He has certainly succeeded who purifies himself and mentions the name of his Lord and prays."
-  },
-    {
-    verse_no: "7:156",
-    verse:
-      "My mercy encompasses all things."
+    author: "Unknown",
+    text: "You either control your mind or it controls you."
   },
   {
-    verse_no: "6:54",
-    verse:
-      "Your Lord has decreed upon Himself mercy."
+    author: "Unknown",
+    text: "Outwork everyone. Outlast everything."
   },
   {
-    verse_no: "39:53",
-    verse:
-      "Do not despair of the mercy of Allah. Indeed, Allah forgives all sins."
+    author: "Khalid ibn al-Walid",
+    text: "I have fought in countless battles… yet I die on my bed. Let the coward never sleep in peace."
   },
   {
-    verse_no: "12:87",
-    verse:
-      "Indeed, no one despairs of relief from Allah except the disbelieving people."
+    author: "Khalid ibn al-Walid",
+    text: "When the night falls, I pray for battle, and when the day comes, I fight with patience and courage."
   },
   {
-    verse_no: "7:23",
-    verse:
-      "Our Lord, we have wronged ourselves, and if You do not forgive us and have mercy upon us, we will surely be among the losers."
+    author: "Ali ibn Abi Talib",
+    text: "Do not be a slave to others when Allah has created you free."
   },
   {
-    verse_no: "21:83",
-    verse:
-      "Indeed, adversity has touched me, and You are the Most Merciful of the merciful."
+    author: "Ali ibn Abi Talib",
+    text: "The strongest among you is the one who controls his anger."
   },
   {
-    verse_no: "4:110",
-    verse:
-      "And whoever does a wrong or wrongs himself but then seeks forgiveness of Allah will find Allah Forgiving and Merciful."
+    author: "Ali ibn Abi Talib",
+    text: "He who has a thousand friends has not a friend to spare, and he who has one enemy will meet him everywhere."
   },
   {
-    verse_no: "3:89",
-    verse:
-      "Except for those who repent after that and correct themselves. Indeed, Allah is Forgiving and Merciful."
+    author: "Salahuddin Ayyubi",
+    text: "Victory is not achieved by numbers, but by faith and patience."
   },
   {
-    verse_no: "24:22",
-    verse:
-      "And let them pardon and overlook. Would you not like that Allah should forgive you?"
+    author: "Salahuddin Ayyubi",
+    text: "I warn you against shedding blood, indulging in it, and making a habit of it."
   },
   {
-    verse_no: "10:107",
-    verse:
-      "And if Allah should touch you with adversity, there is no remover of it except Him; and if He intends for you good, then there is no repeller of His bounty."
+    author: "Umar ibn Al-Khattab",
+    text: "We were the most humiliated people, and Allah gave us honor through Islam."
   },
   {
-    verse_no: "40:7",
-    verse:
-      "Our Lord, You have encompassed all things in mercy and knowledge, so forgive those who repent and follow Your way."
+    author: "Umar ibn Al-Khattab",
+    text: "Take account of yourselves before you are taken to account."
   },
   {
-    verse_no: "57:28",
-    verse:
-      "He will give you a double portion of His mercy and make for you a light by which you will walk."
+    author: "Umar ibn Al-Khattab",
+    text: "Strength is not in never falling, but in rising every time you fall."
   },
   {
-    verse_no: "11:90",
-    verse:
-      "Indeed, my Lord is Merciful and Loving."
+    author: "Hasan al-Basri",
+    text: "The believer is strong in faith, humble in victory, and patient in hardship."
   },
   {
-    verse_no: "18:58",
-    verse:
-      "And your Lord is the Forgiving, full of mercy."
+    author: "Unknown",
+    text: "Tie your camel and trust in Allah."
   },
   {
-    verse_no: "25:70",
-    verse:
-      "Except for those who repent, believe and do righteous work. For them Allah will replace their evil deeds with good."
+    author: "Unknown",
+    text: "A true warrior fights his ego before he fights his enemy."
   },
   {
-    verse_no: "42:25",
-    verse:
-      "And it is He who accepts repentance from His servants and pardons misdeeds."
+    author: "Unknown",
+    text: "Patience is the armor of the believer."
   },
   {
-    verse_no: "3:31",
-    verse:
-      "Say, 'If you love Allah, then follow me; Allah will love you and forgive you your sins.'"
+    author: "Unknown",
+    text: "Stand firm in truth, even if you stand alone."
   },
   {
-    verse_no: "33:43",
-    verse:
-      "And ever is He, to the believers, Merciful."
+    author: "Unknown",
+    text: "Victory comes to those who remain steadfast."
   },
   {
-    verse_no: "48:14",
-    verse:
-      "And Allah is ever Forgiving and Merciful."
+    author: "Unknown",
+    text: "The battlefield begins within the heart."
   },
   {
-    verse_no: "85:14",
-    verse:
-      "And He is the Forgiving, the Affectionate."
+    author: "Unknown",
+    text: "Fear Allah, and you will fear nothing else."
   }
-
 ];

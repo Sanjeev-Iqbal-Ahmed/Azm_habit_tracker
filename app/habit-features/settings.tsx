@@ -1,13 +1,12 @@
-import { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, ScrollView, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter, useFocusEffect } from 'expo-router';
+import { useRouter } from 'expo-router';
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import { useThemeColor } from '@/hooks/use-theme-color';
-import { useTheme } from '@/hooks/use-theme';
 import { resetDatabase, resetQuotes } from '@/database/sqlite';
+import { useTheme } from '@/hooks/use-theme';
+import { useThemeColor } from '@/hooks/use-theme-color';
 
 export default function SettingsScreen() {
     const router = useRouter();
@@ -25,17 +24,16 @@ export default function SettingsScreen() {
 
     const mainSettings = [
         { id: 'account', icon: 'person-outline', label: 'Account' },
-        { id: 'notifications', icon: 'notifications-outline', label: 'Notifications' },
-        { id: 'reminders', icon: 'alarm-outline', label: 'Reminders' },
+        { id: 'notes', icon: 'document-text-outline', label: 'Notes' },
+        { id: 'pomodoro', icon: 'timer-outline', label: 'Pomodoro' },
+        { id: 'passwords', icon: 'key-outline', label: 'Passwords' },
         { id: 'theme', icon: 'color-palette-outline', label: 'Theme' },
-        { id: 'rate', icon: 'star-outline', label: 'Rate This App' },
-        { id: 'support', icon: 'help-circle-outline', label: 'Support' },
     ];
 
-    const footerSettings = [
-        { id: 'privacy', icon: 'lock-closed-outline', label: 'Privacy Policy' },
-        { id: 'about', icon: 'information-circle-outline', label: 'About & Help' },
-    ];
+    // const footerSettings = [
+    //     // { id: 'privacy', icon: 'lock-closed-outline', label: 'Privacy Policy' },
+    //     // { id: 'about', icon: 'information-circle-outline', label: 'About & Help' },
+    // ];
 
     const handleResetDatabase = () => {
         Alert.alert(
@@ -55,10 +53,10 @@ export default function SettingsScreen() {
         );
     };
 
-    const handleRefreshVerses = () => {
+    const handleRefreshQuotes = () => {
         Alert.alert(
-            'Refresh Quranic Verses',
-            'This will update the verse collection with new verses. Your habits, notes, and other data will not be affected.',
+            'Refresh Motivational Quotes',
+            'This will update the quote collection with new inspirational content. Your habits, notes, and other data will not be affected.',
             [
                 { text: 'Cancel', style: 'cancel' },
                 {
@@ -66,9 +64,9 @@ export default function SettingsScreen() {
                     onPress: () => {
                         try {
                             resetQuotes();
-                            Alert.alert('Success', 'Quranic verses have been refreshed!');
+                            Alert.alert('Success', 'Motivational quotes have been refreshed!');
                         } catch (error) {
-                            Alert.alert('Error', 'Failed to refresh verses. Please try again.');
+                            Alert.alert('Error', 'Failed to refresh quotes. Please try again.');
                         }
                     },
                 },
@@ -80,6 +78,15 @@ export default function SettingsScreen() {
         <TouchableOpacity
             key={item.id}
             style={[styles.settingItem, { backgroundColor: surfaceColor, borderColor }]}
+            onPress={() => {
+                if (item.id === 'passwords') {
+                    router.push('/habit-features/passwords');
+                } else if (item.id === 'notes') {
+                    router.push('/(tabs)/notes');
+                } else if (item.id === 'pomodoro') {
+                    router.push('/(tabs)/pomodoro');
+                }
+            }}
         >
             <View style={styles.settingLeft}>
                 <Ionicons name={item.icon} size={24} color={primaryColor} />
@@ -144,22 +151,22 @@ export default function SettingsScreen() {
                 </View>
 
                 {/* Footer Settings */}
-                <View style={styles.footerSection}>
+                {/* <View style={styles.footerSection}>
                     {footerSettings.map((item) => renderSettingItem(item))}
-                </View>
+                </View> */}
 
                 {/* Caution Zone */}
                 <View style={styles.dangerSection}>
                     <ThemedText style={[styles.dangerTitle, { color: mutedColor }]}>Caution</ThemedText>
 
-                    {/* Refresh Verses Button */}
+                    {/* Refresh Quotes Button */}
                     <TouchableOpacity
                         style={[styles.settingItem, { backgroundColor: surfaceColor, borderColor: accentColor }]}
-                        onPress={handleRefreshVerses}
+                        onPress={handleRefreshQuotes}
                     >
                         <View style={styles.settingLeft}>
                             <Ionicons name="refresh-outline" size={24} color={accentColor} />
-                            <ThemedText style={styles.settingLabel}>Refresh Quranic Verses</ThemedText>
+                            <ThemedText style={styles.settingLabel}>Refresh Motivational Quotes</ThemedText>
                         </View>
                         <Ionicons name="chevron-forward" size={20} color={mutedColor} />
                     </TouchableOpacity>

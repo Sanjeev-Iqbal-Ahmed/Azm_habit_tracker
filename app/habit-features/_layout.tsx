@@ -7,8 +7,10 @@ export default function HabitFeaturesLayout() {
             <Stack.Screen name="habit-details" options={{ headerShown: false }} />
             <Stack.Screen name="edit-habit" options={{ headerShown: false }} />
             <Stack.Screen name="settings" options={{ headerShown: false }} />
+            <Stack.Screen name="passwords" options={{ headerShown: false }} />
             <Stack.Screen name="calendar" options={{ headerShown: false }} />
             <Stack.Screen name="add-payment" options={{ headerShown: false }} />
+            <Stack.Screen name="payment-details/[id]" options={{ headerShown: false }} />
         </Stack>
     );
 }

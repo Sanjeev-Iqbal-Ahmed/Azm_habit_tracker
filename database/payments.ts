@@ -11,6 +11,16 @@ export type PaymentRecord = {
     updated_at: string;
 };
 
+export type PaymentItemRecord = {
+    id: number;
+    payment_id: number;
+    item_name: string;
+    amount: number;
+    type: 'to_pay' | 'to_get';
+    created_at: string;
+    updated_at: string;
+};
+
 /**
  * Initialize the payments table
  */
@@ -123,4 +133,82 @@ export function reorderPayments(paymentIds: number[]): void {
             );
         });
     });
+}
+
+/**
+ * Update payment total dynamically from its items
+ */
+function recalculatePaymentTotals(paymentId: number): void {
+    const db = getDatabase();
+    
+    const toPayResult = db.getAllSync(`SELECT SUM(amount) as total FROM payment_items WHERE payment_id = ? AND type = 'to_pay'`, [paymentId]) as {total: number | null}[];
+    const toPay = toPayResult[0]?.total ?? 0;
+    
+    const toGetResult = db.getAllSync(`SELECT SUM(amount) as total FROM payment_items WHERE payment_id = ? AND type = 'to_get'`, [paymentId]) as {total: number | null}[];
+    const toGet = toGetResult[0]?.total ?? 0;
+    
+    db.runSync(`UPDATE payments SET to_pay = ?, to_get = ?, updated_at = datetime('now', 'localtime') WHERE id = ?`, [toPay, toGet, paymentId]);
+}
+
+/**
+ * Get all items for a payment
+ */
+export function getPaymentItems(paymentId: number): PaymentItemRecord[] {
+    return queryAll<PaymentItemRecord>(
+        `SELECT * FROM payment_items WHERE payment_id = ? ORDER BY created_at ASC;`,
+        [paymentId]
+    );
+}
+
+/**
+ * Add a payment item
+ */
+export function addPaymentItem(paymentId: number, itemName: string, amount: number, type: 'to_pay' | 'to_get'): number {
+    const db = getDatabase();
+    const result = db.runSync(
+        `INSERT INTO payment_items (payment_id, item_name, amount, type) VALUES (?, ?, ?, ?)`,
+        [paymentId, itemName, amount, type]
+    );
+    const newId = Number(result.lastInsertRowId ?? 0);
+    recalculatePaymentTotals(paymentId);
+    return newId;
+}
+
+/**
+ * Update a payment item
+ */
+export function updatePaymentItem(id: number, paymentId: number, updates: { itemName?: string; amount?: number; type?: 'to_pay' | 'to_get' }): void {
+    const db = getDatabase();
+    const fields: string[] = [];
+    const values: SQLite.SQLiteBindParams = [];
+
+    if (updates.itemName !== undefined) {
+        fields.push('item_name = ?');
+        values.push(updates.itemName);
+    }
+    if (updates.amount !== undefined) {
+        fields.push('amount = ?');
+        values.push(updates.amount);
+    }
+    if (updates.type !== undefined) {
+        fields.push('type = ?');
+        values.push(updates.type);
+    }
+
+    if (fields.length === 0) return;
+
+    fields.push(`updated_at = datetime('now', 'localtime')`);
+    values.push(id);
+
+    db.runSync(`UPDATE payment_items SET ${fields.join(', ')} WHERE id = ?`, values);
+    recalculatePaymentTotals(paymentId);
+}
+
+/**
+ * Delete a payment item
+ */
+export function deletePaymentItem(id: number, paymentId: number): void {
+    const db = getDatabase();
+    db.runSync(`DELETE FROM payment_items WHERE id = ?`, [id]);
+    recalculatePaymentTotals(paymentId);
 }

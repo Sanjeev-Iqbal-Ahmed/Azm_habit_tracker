@@ -1,5 +1,5 @@
 import * as SQLite from 'expo-sqlite';
-import { quranVerses } from './verses';
+import { motivationalQuotes } from './verses';
 
 let dbInstance: SQLite.SQLiteDatabase | null = null;
 let isInitialized = false;
@@ -127,7 +127,19 @@ export function initializeDatabase() {
       updated_at TEXT DEFAULT (datetime('now'))
     );`);
 
+        db.runSync(`CREATE TABLE IF NOT EXISTS payment_items (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      payment_id INTEGER NOT NULL,
+      item_name TEXT NOT NULL,
+      amount REAL NOT NULL DEFAULT 0,
+      type TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      updated_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY (payment_id) REFERENCES payments(id) ON DELETE CASCADE
+    );`);
+
         db.runSync(`CREATE INDEX IF NOT EXISTS idx_habit_logs_habit_date ON habit_logs (habit_id, log_date);`);
+        db.runSync(`CREATE INDEX IF NOT EXISTS idx_payment_items_payment_id ON payment_items (payment_id);`);
 
         // Backfill columns for older installs if missing.
         try {
@@ -203,11 +215,21 @@ export function initializeDatabase() {
             // ignore if column already exists
         }
 
-        // Create quotes table
+        // Create quotes table - use a drop/recreate to ensure schema matches for quotes specifically
+        // since it is a safe static-data table
+        try {
+            // Check if existing table has the old column name
+            const tableInfo = db.getAllSync<{ name: string }>(`PRAGMA table_info(quotes)`);
+            const hasOldColumn = tableInfo.some(col => col.name === 'verse_no');
+            if (hasOldColumn) {
+                db.runSync('DROP TABLE IF EXISTS quotes');
+            }
+        } catch (e) {}
+
         db.runSync(`CREATE TABLE IF NOT EXISTS quotes (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            verse_no TEXT NOT NULL,
-            verse TEXT NOT NULL,
+            author TEXT NOT NULL,
+            quote_text TEXT NOT NULL,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP,
             updated_at TEXT DEFAULT CURRENT_TIMESTAMP
         );`);
@@ -220,12 +242,12 @@ export function initializeDatabase() {
 
     if (!existing || existing.count === 0) {
         const stmt = db.prepareSync(
-            'INSERT INTO quotes (verse_no, verse) VALUES (?, ?)'
+            'INSERT INTO quotes (author, quote_text) VALUES (?, ?)'
         );
-
+ 
         try {
-            for (const verse of quranVerses) {
-                stmt.executeSync([verse.verse_no, verse.verse]);
+            for (const quote of motivationalQuotes) {
+                stmt.executeSync([quote.author, quote.text]);
             }
         } finally {
             stmt.finalizeSync();
@@ -246,6 +268,7 @@ export function resetDatabase(): void {
         db.runSync('DROP TABLE IF EXISTS settings');
         db.runSync('DROP TABLE IF EXISTS to_do');
         db.runSync('DROP TABLE IF EXISTS notes');
+        db.runSync('DROP TABLE IF EXISTS payment_items');
         db.runSync('DROP TABLE IF EXISTS payments');
         db.runSync('DROP TABLE IF EXISTS quotes');
     });
@@ -258,18 +281,25 @@ export function resetDatabase(): void {
  */
 export function resetQuotes(): void {
     const db = getDatabase();
-
-    // Clear quotes table
-    db.runSync('DELETE FROM quotes');
-
-    // Re-seed with updated verses
+ 
+    // Drop and recreate to ensure schema alignment
+    db.runSync('DROP TABLE IF EXISTS quotes');
+    db.runSync(`CREATE TABLE IF NOT EXISTS quotes (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        author TEXT NOT NULL,
+        quote_text TEXT NOT NULL,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        updated_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );`);
+ 
+    // Re-seed with updated quotes
     const stmt = db.prepareSync(
-        'INSERT INTO quotes (verse_no, verse) VALUES (?, ?)'
+        'INSERT INTO quotes (author, quote_text) VALUES (?, ?)'
     );
-
+ 
     try {
-        for (const verse of quranVerses) {
-            stmt.executeSync([verse.verse_no, verse.verse]);
+        for (const quote of motivationalQuotes) {
+            stmt.executeSync([quote.author, quote.text]);
         }
     } finally {
         stmt.finalizeSync();
