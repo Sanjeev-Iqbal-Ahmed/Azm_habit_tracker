@@ -834,13 +834,13 @@ const styles = StyleSheet.create({
   verseText: {
     fontSize: 15,
     lineHeight: 24,
-    fontWeight: '500',
+    fontWeight: '600',
     fontStyle: 'italic',
     marginBottom: 12,
   },
   verseReference: {
-    fontSize: 13,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '500',
     textAlign: 'right',
   },
 });

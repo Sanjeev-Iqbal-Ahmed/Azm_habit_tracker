@@ -21,6 +21,8 @@ import {
     getPasswordEntries,
     initializePasswordsTable,
     updatePasswordEntry,
+    getMasterPassword,
+    setMasterPassword,
     type PasswordEntryRecord,
 } from '@/database/passwords';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -63,11 +65,51 @@ export default function PasswordsScreen() {
     const [form, setForm] = useState<FormState>(emptyForm);
     const [showPasswordInput, setShowPasswordInput] = useState(false);
 
+    const [hasMasterPassword, setHasMasterPassword] = useState<boolean | null>(null);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
+    const [masterPasswordInput, setMasterPasswordInput] = useState('');
+    const [confirmMasterPasswordInput, setConfirmMasterPasswordInput] = useState('');
+    const [isChangingMasterPassword, setIsChangingMasterPassword] = useState(false);
+
     const nameRef = useRef<TextInput>(null);
 
     const loadEntries = () => {
         initializePasswordsTable();
+        const currentMaster = getMasterPassword();
+        setHasMasterPassword(!!currentMaster);
         setEntries(getPasswordEntries());
+    };
+
+    const handleSetupMasterPassword = () => {
+        if (!masterPasswordInput || !confirmMasterPasswordInput) {
+            Alert.alert('Error', 'Please fill in both fields.');
+            return;
+        }
+        if (masterPasswordInput !== confirmMasterPasswordInput) {
+            Alert.alert('Error', 'Passwords do not match.');
+            return;
+        }
+        try {
+            setMasterPassword(masterPasswordInput);
+            setHasMasterPassword(true);
+            setIsAuthenticated(true);
+            setMasterPasswordInput('');
+            setConfirmMasterPasswordInput('');
+            setIsChangingMasterPassword(false);
+            Alert.alert('Success', 'Master password configured successfully.');
+        } catch (e) {
+            Alert.alert('Error', 'Could not save master password.');
+        }
+    };
+
+    const handleUnlockVault = () => {
+        const currentMaster = getMasterPassword();
+        if (masterPasswordInput === currentMaster) {
+            setIsAuthenticated(true);
+            setMasterPasswordInput('');
+        } else {
+            Alert.alert('Error', 'Incorrect master password.');
+        }
     };
 
     useEffect(() => {
@@ -224,6 +266,120 @@ export default function PasswordsScreen() {
         );
     };
 
+    if (hasMasterPassword === null) {
+        return <ThemedView style={[styles.container, { backgroundColor }]} />;
+    }
+
+    if (hasMasterPassword === false || isChangingMasterPassword) {
+        return (
+            <ThemedView style={[styles.container, { backgroundColor }]}>
+                <View style={styles.topBar}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => {
+                        if (isChangingMasterPassword && hasMasterPassword) {
+                            setIsChangingMasterPassword(false);
+                            setMasterPasswordInput('');
+                            setConfirmMasterPasswordInput('');
+                        } else {
+                            router.back();
+                        }
+                    }}>
+                        <Ionicons name="chevron-back" size={24} color={primaryColor} />
+                    </TouchableOpacity>
+                    <ThemedText type="title" style={styles.title}>
+                        {isChangingMasterPassword ? 'Change Password' : 'Setup Vault'}
+                    </ThemedText>
+                    <View style={styles.backButton} />
+                </View>
+
+                <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 20 }}>
+                    <ThemedText style={{ fontSize: 16, textAlign: 'center', marginBottom: 24, color: mutedColor }}>
+                        {isChangingMasterPassword 
+                            ? 'Enter your new master password.' 
+                            : 'Create a master password to secure your passwords vault.'}
+                    </ThemedText>
+                    
+                    <View style={[styles.inputContainer, { backgroundColor: surfaceColor, borderColor, marginBottom: 16 }]}>
+                        <Ionicons name="lock-closed-outline" size={20} color={mutedColor} />
+                        <TextInput
+                            value={masterPasswordInput}
+                            onChangeText={setMasterPasswordInput}
+                            placeholder="Master password"
+                            placeholderTextColor={mutedColor}
+                            style={[styles.input, { color: primaryColor }]}
+                            secureTextEntry={!showPasswordInput}
+                            autoCapitalize="none"
+                        />
+                        <TouchableOpacity onPress={() => setShowPasswordInput((v) => !v)} style={styles.eyeButton}>
+                            <Ionicons name={showPasswordInput ? 'eye-off-outline' : 'eye-outline'} size={20} color={mutedColor} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <View style={[styles.inputContainer, { backgroundColor: surfaceColor, borderColor, marginBottom: 24 }]}>
+                        <Ionicons name="lock-closed-outline" size={20} color={mutedColor} />
+                        <TextInput
+                            value={confirmMasterPasswordInput}
+                            onChangeText={setConfirmMasterPasswordInput}
+                            placeholder="Confirm master password"
+                            placeholderTextColor={mutedColor}
+                            style={[styles.input, { color: primaryColor }]}
+                            secureTextEntry={!showPasswordInput}
+                            autoCapitalize="none"
+                        />
+                    </View>
+
+                    <TouchableOpacity onPress={handleSetupMasterPassword} style={[styles.saveButton, { backgroundColor: accentColor }]}>
+                        <ThemedText style={[styles.saveButtonText, { color: accentTextColor }]}>
+                            {isChangingMasterPassword ? 'Update Password' : 'Set Master Password'}
+                        </ThemedText>
+                    </TouchableOpacity>
+                </View>
+            </ThemedView>
+        );
+    }
+
+    if (!isAuthenticated) {
+        return (
+            <ThemedView style={[styles.container, { backgroundColor }]}>
+                <View style={styles.topBar}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+                        <Ionicons name="chevron-back" size={24} color={primaryColor} />
+                    </TouchableOpacity>
+                    <ThemedText type="title" style={styles.title}>Vault Locked</ThemedText>
+                    <View style={styles.backButton} />
+                </View>
+
+                <View style={{ flex: 1, justifyContent: 'center', paddingHorizontal: 20 }}>
+                    <Ionicons name="lock-closed" size={64} color={mutedColor} style={{ alignSelf: 'center', marginBottom: 24 }} />
+                    <ThemedText style={{ fontSize: 16, textAlign: 'center', marginBottom: 24, color: mutedColor }}>
+                        Enter your master password to access the vault.
+                    </ThemedText>
+                    
+                    <View style={[styles.inputContainer, { backgroundColor: surfaceColor, borderColor, marginBottom: 24 }]}>
+                        <Ionicons name="key-outline" size={20} color={mutedColor} />
+                        <TextInput
+                            value={masterPasswordInput}
+                            onChangeText={setMasterPasswordInput}
+                            placeholder="Master password"
+                            placeholderTextColor={mutedColor}
+                            style={[styles.input, { color: primaryColor }]}
+                            secureTextEntry={!showPasswordInput}
+                            autoCapitalize="none"
+                            returnKeyType="done"
+                            onSubmitEditing={handleUnlockVault}
+                        />
+                        <TouchableOpacity onPress={() => setShowPasswordInput((v) => !v)} style={styles.eyeButton}>
+                            <Ionicons name={showPasswordInput ? 'eye-off-outline' : 'eye-outline'} size={20} color={mutedColor} />
+                        </TouchableOpacity>
+                    </View>
+
+                    <TouchableOpacity onPress={handleUnlockVault} style={[styles.saveButton, { backgroundColor: accentColor }]}>
+                        <ThemedText style={[styles.saveButtonText, { color: accentTextColor }]}>Unlock</ThemedText>
+                    </TouchableOpacity>
+                </View>
+            </ThemedView>
+        );
+    }
+
     return (
         <ThemedView style={[styles.container, { backgroundColor }]}>
             <View style={styles.topBar}>
@@ -231,9 +387,20 @@ export default function PasswordsScreen() {
                     <Ionicons name="chevron-back" size={24} color={primaryColor} />
                 </TouchableOpacity>
                 <ThemedText type="title" style={styles.title}>Passwords</ThemedText>
-                <TouchableOpacity style={styles.backButton} onPress={openCreate}>
-                    <Ionicons name="add" size={26} color={primaryColor} />
-                </TouchableOpacity>
+                
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <TouchableOpacity style={styles.backButton} onPress={() => {
+                        setMasterPasswordInput('');
+                        setConfirmMasterPasswordInput('');
+                        setShowPasswordInput(false);
+                        setIsChangingMasterPassword(true);
+                    }}>
+                        <Ionicons name="settings-outline" size={22} color={primaryColor} />
+                    </TouchableOpacity>
+                    <TouchableOpacity style={styles.backButton} onPress={openCreate}>
+                        <Ionicons name="add" size={26} color={primaryColor} />
+                    </TouchableOpacity>
+                </View>
             </View>
 
             <View style={[styles.searchContainer, { backgroundColor: surfaceColor, borderColor }]}>

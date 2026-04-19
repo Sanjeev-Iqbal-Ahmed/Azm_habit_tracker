@@ -271,6 +271,10 @@ export function resetDatabase(): void {
         db.runSync('DROP TABLE IF EXISTS payment_items');
         db.runSync('DROP TABLE IF EXISTS payments');
         db.runSync('DROP TABLE IF EXISTS quotes');
+        db.runSync('DROP TABLE IF EXISTS to_do_now');
+        db.runSync('DROP TABLE IF EXISTS daily_notes');
+        db.runSync('DROP TABLE IF EXISTS password_entries');
+        db.runSync('DROP TABLE IF EXISTS master_password_config');
     });
     isInitialized = false;
     initializeDatabase();

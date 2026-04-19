@@ -29,6 +29,12 @@ export function initializePasswordsTable(): void {
       created_at TEXT DEFAULT (datetime('now')),
       updated_at TEXT DEFAULT (datetime('now'))
     );`);
+
+        db.runSync(`CREATE TABLE IF NOT EXISTS master_password_config (
+      id INTEGER PRIMARY KEY CHECK (id = 1),
+      password TEXT NOT NULL,
+      updated_at TEXT DEFAULT (datetime('now'))
+    );`);
     });
 
     isPasswordsInitialized = true;
@@ -106,4 +112,30 @@ export function deletePasswordEntry(id: number): void {
 
     const db = getDatabase();
     db.runSync('DELETE FROM password_entries WHERE id = ?', [id]);
+}
+
+export function getMasterPassword(): string | null {
+    initializePasswordsTable();
+
+    const db = getDatabase();
+    const result = db.getAllSync<{ password: string }>(
+        `SELECT password FROM master_password_config WHERE id = 1 LIMIT 1;`
+    );
+
+    if (result.length > 0) {
+        return result[0].password;
+    }
+    return null;
+}
+
+export function setMasterPassword(password: string): void {
+    initializePasswordsTable();
+
+    const db = getDatabase();
+    db.runSync(
+        `INSERT INTO master_password_config (id, password) 
+         VALUES (1, ?) 
+         ON CONFLICT(id) DO UPDATE SET password = excluded.password, updated_at = datetime('now')`,
+        [password]
+    );
 }

@@ -1,9 +1,11 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { Alert, ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import React, { useState } from 'react';
+import { Alert, ScrollView, StyleSheet, TouchableOpacity, View, Modal } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { exportDatabase, importDatabase } from '@/database/backup';
 import { resetDatabase, resetQuotes } from '@/database/sqlite';
 import { useTheme } from '@/hooks/use-theme';
 import { useThemeColor } from '@/hooks/use-theme-color';
@@ -18,6 +20,8 @@ export default function SettingsScreen() {
     const mutedColor = useThemeColor({}, 'muted');
     const borderColor = useThemeColor({}, 'border');
 
+    const [isResetConfirmVisible, setIsResetConfirmVisible] = useState(false);
+
     const handleThemeChange = (theme: 'light' | 'dark') => {
         setPreference(theme);
     };
@@ -30,25 +34,34 @@ export default function SettingsScreen() {
         { id: 'theme', icon: 'color-palette-outline', label: 'Theme' },
     ];
 
-    // const footerSettings = [
-    //     // { id: 'privacy', icon: 'lock-closed-outline', label: 'Privacy Policy' },
-    //     // { id: 'about', icon: 'information-circle-outline', label: 'About & Help' },
-    // ];
-
     const handleResetDatabase = () => {
+        setIsResetConfirmVisible(true);
+    };
+
+    const cancelResetDatabase = () => {
+        setIsResetConfirmVisible(false);
+    };
+
+    const confirmResetDatabase = () => {
+        resetDatabase();
+        setIsResetConfirmVisible(false);
+        Alert.alert('Success', 'Database has been reset. Please restart the app.');
+    };
+
+    const handleExportData = () => {
+        exportDatabase();
+    };
+
+    const handleImportData = () => {
         Alert.alert(
-            'Reset Database',
-            'This will delete ALL data including habits, payments, notes, and to-dos. This action cannot be undone. Continue?',
+            'Import Data',
+            'This will overwrite all your current data with the selected backup. Make sure you have exported your current data if you wish to keep it. Do you want to proceed?',
             [
                 { text: 'Cancel', style: 'cancel' },
-                {
-                    text: 'Reset',
-                    style: 'destructive',
-                    onPress: () => {
-                        resetDatabase();
-                        Alert.alert('Success', 'Database has been reset. Please restart the app.');
-                    },
-                },
+                { 
+                    text: 'Select File', 
+                    onPress: () => importDatabase() 
+                }
             ]
         );
     };
@@ -150,10 +163,34 @@ export default function SettingsScreen() {
                     )}
                 </View>
 
-                {/* Footer Settings */}
-                {/* <View style={styles.footerSection}>
-                    {footerSettings.map((item) => renderSettingItem(item))}
-                </View> */}
+                {/* Data Management Section */}
+                <View style={styles.section}>
+                    <ThemedText style={[styles.sectionTitle, { color: mutedColor }]}>Data Management</ThemedText>
+
+                    {/* Export Data Button */}
+                    <TouchableOpacity
+                        style={[styles.settingItem, { backgroundColor: surfaceColor, borderColor }]}
+                        onPress={handleExportData}
+                    >
+                        <View style={styles.settingLeft}>
+                            <Ionicons name="cloud-upload-outline" size={24} color={primaryColor} />
+                            <ThemedText style={styles.settingLabel}>Export Data</ThemedText>
+                        </View>
+                        <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+                    </TouchableOpacity>
+
+                    {/* Import Data Button */}
+                    <TouchableOpacity
+                        style={[styles.settingItem, { backgroundColor: surfaceColor, borderColor }]}
+                        onPress={handleImportData}
+                    >
+                        <View style={styles.settingLeft}>
+                            <Ionicons name="cloud-download-outline" size={24} color={primaryColor} />
+                            <ThemedText style={styles.settingLabel}>Import Data</ThemedText>
+                        </View>
+                        <Ionicons name="chevron-forward" size={20} color={mutedColor} />
+                    </TouchableOpacity>
+                </View>
 
                 {/* Caution Zone */}
                 <View style={styles.dangerSection}>
@@ -184,6 +221,37 @@ export default function SettingsScreen() {
                     </TouchableOpacity>
                 </View>
             </ScrollView>
+
+            <Modal
+                visible={isResetConfirmVisible}
+                transparent={true}
+                animationType="fade"
+                onRequestClose={cancelResetDatabase}
+            >
+                <View style={styles.confirmOverlay}>
+                    <View style={[styles.confirmDialog, { backgroundColor: surfaceColor }]}>
+                        <Ionicons name="alert-circle-outline" size={48} color="#EF4444" style={styles.confirmIcon} />
+                        <ThemedText style={styles.confirmTitle}>Reset Database?</ThemedText>
+                        <ThemedText style={[styles.confirmMessage, { color: mutedColor }]}>
+                            This will delete ALL data including habits, payments, notes, and to-dos. This action cannot be undone. Continue?
+                        </ThemedText>
+                        <View style={styles.confirmActions}>
+                            <TouchableOpacity
+                                style={[styles.confirmButton, { borderColor: borderColor, borderWidth: 1 }]}
+                                onPress={cancelResetDatabase}
+                            >
+                                <ThemedText style={{ color: primaryColor }}>Cancel</ThemedText>
+                            </TouchableOpacity>
+                            <TouchableOpacity
+                                style={[styles.confirmButton, { backgroundColor: '#EF4444' }]}
+                                onPress={confirmResetDatabase}
+                            >
+                                <ThemedText style={{ color: '#FFFFFF', fontWeight: '600' }}>Reset</ThemedText>
+                            </TouchableOpacity>
+                        </View>
+                    </View>
+                </View>
+            </Modal>
         </ThemedView>
     );
 }
@@ -216,6 +284,13 @@ const styles = StyleSheet.create({
     },
     section: {
         marginBottom: 32,
+    },
+    sectionTitle: {
+        fontSize: 14,
+        fontWeight: '600',
+        marginBottom: 12,
+        textTransform: 'uppercase',
+        marginLeft: 4,
     },
     footerSection: {
         paddingBottom: 40,
@@ -275,5 +350,45 @@ const styles = StyleSheet.create({
     },
     dangerItem: {
         borderWidth: 1,
+    },
+    confirmOverlay: {
+        flex: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.6)',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: 20,
+    },
+    confirmDialog: {
+        width: '100%',
+        maxWidth: 340,
+        borderRadius: 20,
+        padding: 24,
+        alignItems: 'center',
+    },
+    confirmIcon: {
+        marginBottom: 16,
+    },
+    confirmTitle: {
+        fontSize: 20,
+        fontWeight: '700',
+        marginBottom: 8,
+        textAlign: 'center',
+    },
+    confirmMessage: {
+        fontSize: 14,
+        textAlign: 'center',
+        marginBottom: 24,
+        lineHeight: 20,
+    },
+    confirmActions: {
+        flexDirection: 'row',
+        gap: 12,
+        width: '100%',
+    },
+    confirmButton: {
+        flex: 1,
+        paddingVertical: 12,
+        borderRadius: 12,
+        alignItems: 'center',
     },
 });
